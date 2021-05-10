@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\pugga\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\pugga\\.nuget\\packages"
+    ]
+  }
+}

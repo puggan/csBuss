@@ -1,0 +1,16 @@
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.exe
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.deps.json
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.runtimeconfig.json
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.runtimeconfig.dev.json
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.dll
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\ref\Bussen.dll
+C:\Users\pugga\RiderProjects\Bussen\Bussen\bin\Debug\net5.0\Bussen.pdb
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.csprojAssemblyReference.cache
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.AssemblyInfoInputs.cache
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.AssemblyInfo.cs
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.csproj.CoreCompileInputs.cache
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.dll
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\ref\Bussen.dll
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.pdb
+C:\Users\pugga\RiderProjects\Bussen\Bussen\obj\Debug\net5.0\Bussen.genruntimeconfig.cache

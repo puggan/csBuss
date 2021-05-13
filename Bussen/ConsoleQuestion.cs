@@ -1,4 +1,6 @@
-﻿namespace Bussen
+﻿using ConsoleIF = System.Console;
+
+namespace Bussen
 {
     public class ConsoleQuestion : Question
     {
@@ -6,21 +8,21 @@
         {
             if (newlineBefore)
             {
-                System.Console.WriteLine();
+                ConsoleIF.WriteLine();
             }
 
-            System.Console.Write(text);
+            ConsoleIF.Write(text);
 
             if (newlineAfter)
             {
-                System.Console.WriteLine();
+                ConsoleIF.WriteLine();
             }
         }
 
         protected override async System.Threading.Tasks.Task<string?> Ask(string question)
         {
             Tell(question + " ", true, false);
-            return await System.Threading.Tasks.Task.Run(() => System.Console.ReadLine());
+            return await System.Threading.Tasks.Task.Run(() => ConsoleIF.ReadLine());
         }
     }
 }

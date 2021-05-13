@@ -1,4 +1,6 @@
-﻿namespace Bussen
+﻿using Sexes = Bussen.Sex;
+
+namespace Bussen
 {
     public class Passenger
     {
@@ -16,23 +18,23 @@
         
         public bool isMale()
         {
-            return sex == Bussen.Sex.Male;
+            return sex == Sexes.Male;
         }
 
         public bool isFemale()
         {
-            return sex == Bussen.Sex.Female;
+            return sex == Sexes.Female;
         }
 
         public string pokeReaction()
         {
             switch (sex)
             {
-                case Bussen.Sex.Male:
+                case Sexes.Male:
                     return age < 5 ? "Gråter" : "Grymtar lätt";
-                case Bussen.Sex.Female:
+                case Sexes.Female:
                     return age < 3 ? "Gråter" : "Skriker högt";
-                case Bussen.Sex.Other:
+                case Sexes.Other:
                     return age < 15 ? "Kramar dig" : "Kastar anklagelser omkring sig";
                 default:
                     return "Kryper ihop och ökar volymen på sin musikspelare";

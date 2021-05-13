@@ -1,34 +1,42 @@
-﻿namespace Bussen
+﻿using AsyncString = System.Threading.Tasks.Task<string>;
+using AsyncNullString = System.Threading.Tasks.Task<string?>;
+using RegExp = System.Text.RegularExpressions.Regex;
+using StringConcater = System.Text.StringBuilder;
+using AsyncInt = System.Threading.Tasks.Task<int>;
+using StringList = System.Collections.Generic.IEnumerable<string>;
+using ArgumentException = System.ArgumentException;
+
+namespace Bussen
 {
     public abstract class Question
     {
-        public static ConsoleQuestion Console() => new ConsoleQuestion();
-        public static WindowsQuestion Window() => new WindowsQuestion();
+        public static ConsoleQuestion Console() => new();
+        public static WindowsQuestion Window() => new();
 
         public abstract void Tell(string text, bool newlineBefore, bool newlineAfter);
 
-        protected abstract System.Threading.Tasks.Task<string?> Ask(string question);
+        protected abstract AsyncNullString Ask(string question);
 
         public void Tell(string text) => Tell(text, false, true);
 
-        public System.Threading.Tasks.Task<string> AskString(string question) => AskString(
+        public AsyncString AskString(string question) => AskString(
             question,
-            new System.Text.RegularExpressions.Regex(".")
+            new RegExp(".")
         );
 
-        public async System.Threading.Tasks.Task<int> AskInt(string question) => System.Int32.Parse(
-            await AskString(question, new System.Text.RegularExpressions.Regex("^-?(0|[1-9]\\d*)$"))
+        public async AsyncInt AskInt(string question) => System.Int32.Parse(
+            await AskString(question, new RegExp("^-?(0|[1-9]\\d*)$"))
         );
 
-        public async System.Threading.Tasks.Task<int> AskUInt(string question) => System.Int32.Parse(
-            await AskString(question, new System.Text.RegularExpressions.Regex("^(0|[1-9]\\d*)$"))
+        public async AsyncInt AskUInt(string question) => System.Int32.Parse(
+            await AskString(question, new RegExp("^(0|[1-9]\\d*)$"))
         );
 
-        public async System.Threading.Tasks.Task<int> AskIntRange(string question, int min, int max)
+        public async AsyncInt AskIntRange(string question, int min, int max)
         {
             if (min > max)
             {
-                throw new System.ArgumentException("Invalid range " + min + " - " + max + ".");
+                throw new ArgumentException("Invalid range " + min + " - " + max + ".");
             }
 
             while(true)
@@ -41,11 +49,10 @@
             }
         }
 
-        public async System.Threading.Tasks.Task<int> AskOptions(string title,
-            System.Collections.Generic.IEnumerable<string> list)
+        public async AsyncInt AskOptions(string title, StringList list)
         {
             int index = 0;
-            System.Text.StringBuilder text = new System.Text.StringBuilder(title);
+            StringConcater text = new(title);
             foreach(string row in list) {
                 text.AppendLine();
                 text.Append($"{++index}. {row}.");
@@ -57,7 +64,7 @@
             return await AskIntRange(text.ToString(), 1, index);
         }
         
-        public async System.Threading.Tasks.Task<string> AskString(string question, System.Text.RegularExpressions.Regex filter)
+        public async AsyncString AskString(string question, RegExp filter)
         {
             string? answer;
             do

@@ -1,4 +1,6 @@
-﻿namespace Bussen
+﻿using AppException = System.ApplicationException;
+
+namespace Bussen
 {
     public enum Sex
     {
@@ -23,7 +25,7 @@
                     return "Annat";
             }
 
-            throw new System.ApplicationException("Unreachable state?");
+            throw new AppException("Unreachable state?");
         }
     }
 }

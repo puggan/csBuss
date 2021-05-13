@@ -1,4 +1,6 @@
-﻿namespace Bussen
+﻿using PassengersSlice = System.ArraySegment<Bussen.Passenger>;
+
+namespace Bussen
 {
     public class Buss
     {
@@ -17,7 +19,7 @@
 
         public void AddPassenger(Passenger passenger) => passengers[passengerCount++] = passenger;
 
-        public System.Collections.Generic.IEnumerable<Passenger> Passengers() => new System.ArraySegment<Passenger>(passengers, 0, passengerCount);
+        public PassengersSlice Passengers() => new (passengers, 0, passengerCount);
 
         public Passenger Passenger(int index) => passengers[index];
     }

@@ -1,21 +1,30 @@
-﻿namespace Bussen
+﻿using StringList = System.Collections.Generic.List<string>;
+using SexList = System.Collections.Generic.List<Bussen.Sex>;
+using RandomSeed = System.Random;
+using AsyncTask = System.Threading.Tasks.Task;
+using AsyncBool = System.Threading.Tasks.Task<bool>;
+using AppException = System.ApplicationException;
+using StringConcater = System.Text.StringBuilder;
+using Env = System.Environment;
+
+namespace Bussen
 {
     class Program
     {
-        private static readonly System.Collections.Generic.IList<string> MainMenyOptions = new System.Collections.Generic.List<string>() {
+        private static readonly StringList MainMenyOptions = new() {
             "Lägg till passagerare",
             "Lista passagerare",
             "Summera åldern",
             "Peta på slumpvald passagerare",
             "Skrota bussen"
         };
-        private static readonly System.Collections.Generic.IList<string> SexNamedOptions = new System.Collections.Generic.List<string>() {
+        private static readonly StringList SexNamedOptions = new() {
             "Okänd",
             "Man",
             "Kvinna",
             "Annat",
         };
-        private static readonly System.Collections.Generic.IList<Sex> SexOptions = new System.Collections.Generic.List<Sex>() {
+        private static readonly SexList SexOptions = new() {
             Sex.Unknown,
             Sex.Male,
             Sex.Female,
@@ -24,8 +33,8 @@
         
         private Buss? buss;
         private readonly Question ui;
-        private System.Random? seed;
-        private readonly System.Threading.Tasks.Task main;
+        private RandomSeed? seed;
+        private readonly AsyncTask main;
 
         private static void Main(string[] args)
         {
@@ -38,7 +47,7 @@
             main = MainLoop();
         }
 
-        private async System.Threading.Tasks.Task MainLoop()
+        private async AsyncTask MainLoop()
         {
             ui.Tell("Welcome to the awesome Buss-simulator, Buss Tycoon v13.37");
             int size = await ui.AskUInt("Hur många passagerar får det plats på bussen?");
@@ -56,14 +65,14 @@
                 }
             }
 
-            System.Environment.Exit(0);
+            Env.Exit(0);
         }
 
         private string Status()
         {
             if (buss == null)
             {
-                throw new System.ApplicationException("Unreachable state");
+                throw new AppException("Unreachable state");
             }
 
             return string.Format(
@@ -73,7 +82,7 @@
             );
         }
 
-        private async System.Threading.Tasks.Task<bool> MainMenu()
+        private async AsyncBool MainMenu()
         {
             switch (await ui.AskOptions($"Status {this.Status()}", MainMenyOptions))
             {
@@ -89,14 +98,14 @@
                     return await PokePassenger();
             }
 
-            throw new System.ApplicationException("Unreachable state?");
+            throw new AppException("Unreachable state?");
         }
 
-        private async System.Threading.Tasks.Task<bool> AddPassenger()
+        private async AsyncBool AddPassenger()
         {
             if (buss == null)
             {
-                throw new System.ApplicationException("Unreachable state");
+                throw new AppException("Unreachable state");
             }
 
             if (buss.PassengerMaxCount() <= buss.PassengerCount())
@@ -112,14 +121,14 @@
             return true;
         }
 
-        private System.Threading.Tasks.Task<bool> ListPassenger()
+        private AsyncBool ListPassenger()
         {
             if (buss == null)
             {
-                throw new System.ApplicationException("Unreachable state");
+                throw new AppException("Unreachable state");
             }
 
-            System.Text.StringBuilder text = new System.Text.StringBuilder();
+            StringConcater text = new();
             foreach (Passenger passenger in buss.Passengers())
             {
                 text.AppendLine(string.Format(
@@ -129,14 +138,14 @@
                 ));
             }
             ui.Tell(text.ToString());
-            return System.Threading.Tasks.Task.FromResult(true);
+            return AsyncTask.FromResult(true);
         }
 
-        private System.Threading.Tasks.Task<bool> SumPassenger()
+        private AsyncBool SumPassenger()
         {
             if (buss == null)
             {
-                throw new System.ApplicationException("Unreachable state");
+                throw new AppException("Unreachable state");
             }
 
             int totalAge = 0;
@@ -160,25 +169,25 @@
             {
                 ui.Tell("Total ålder 0 år på de 0 passagerarna, ett snitt på 1337 år");
             }
-            return System.Threading.Tasks.Task.FromResult(true);
+            return AsyncTask.FromResult(true);
         }
 
-        private System.Threading.Tasks.Task<bool> PokePassenger()
+        private AsyncBool PokePassenger()
         {
             if (buss == null)
             {
-                throw new System.ApplicationException("Unreachable state");
+                throw new AppException("Unreachable state");
             }
 
             if (buss.PassengerCount() < 1)
             {
                 ui.Tell("Petade på alla sätten i bussen, inte en enda reaktion från varken männsika eller spöke.");
-                return System.Threading.Tasks.Task.FromResult(false);
+                return AsyncTask.FromResult(false);
             }
 
             if (seed == null)
             {
-                seed = new System.Random();
+                seed = new RandomSeed();
             }
 
             int index = seed.Next(0, buss.PassengerCount());
@@ -188,7 +197,7 @@
                 buss.Passenger(index).pokeReaction()
             ));
 
-            return System.Threading.Tasks.Task.FromResult(true);
+            return AsyncTask.FromResult(true);
         }
     }
 }

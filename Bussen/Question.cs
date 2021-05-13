@@ -1,10 +1,10 @@
-﻿using AsyncString = System.Threading.Tasks.Task<string>;
+﻿using ArgumentException = System.ArgumentException;
+using AsyncInt = System.Threading.Tasks.Task<int>;
 using AsyncNullString = System.Threading.Tasks.Task<string?>;
+using AsyncString = System.Threading.Tasks.Task<string>;
 using RegExp = System.Text.RegularExpressions.Regex;
 using StringConcater = System.Text.StringBuilder;
-using AsyncInt = System.Threading.Tasks.Task<int>;
 using StringList = System.Collections.Generic.IEnumerable<string>;
-using ArgumentException = System.ArgumentException;
 
 namespace Bussen
 {
@@ -66,13 +66,19 @@ namespace Bussen
         
         public async AsyncString AskString(string question, RegExp filter)
         {
-            string? answer;
+            string cleanAnswer;
             do
             {
-                answer = await Ask(question);
-            } while (answer == null || !filter.IsMatch(answer));
+                string? answer;
+                do
+                {
+                    answer = await Ask(question);
+                } while (answer == null);
 
-            return answer;
+                cleanAnswer = answer.Trim();
+            } while (!filter.IsMatch(cleanAnswer));
+
+            return cleanAnswer;
         }
     }
 }

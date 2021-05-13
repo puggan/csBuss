@@ -1,11 +1,12 @@
-﻿using StringList = System.Collections.Generic.List<string>;
-using SexList = System.Collections.Generic.List<Bussen.Sex>;
-using RandomSeed = System.Random;
-using AsyncTask = System.Threading.Tasks.Task;
+﻿using AppException = System.ApplicationException;
 using AsyncBool = System.Threading.Tasks.Task<bool>;
-using AppException = System.ApplicationException;
-using StringConcater = System.Text.StringBuilder;
+using AsyncTask = System.Threading.Tasks.Task;
 using Env = System.Environment;
+using RandomSeed = System.Random;
+using SexList = System.Collections.Generic.List<Bussen.Sex>;
+using StringConcater = System.Text.StringBuilder;
+using StringList = System.Collections.Generic.List<string>;
+using ProgramList = System.Collections.Generic.List<Bussen.Program>;
 
 namespace Bussen
 {
@@ -38,7 +39,30 @@ namespace Bussen
 
         private static void Main(string[] args)
         {
-            (new Program(Question.Console())).main.GetAwaiter().GetResult();
+            int port = 1337;
+            ProgramList activePrograms = new();
+            Question consoleUI = Question.Console();
+            consoleUI.Tell("Program also avaible using telnet at port " + port);
+
+            Program consoleProgram = (new Program(consoleUI));
+            activePrograms.Add(consoleProgram);
+
+            AsyncTask listener = AsyncTask.Run(() =>
+                {
+                    foreach (Question connection in NetworkQuestion.ListenUi(port))
+                    {
+                        activePrograms.Add(new Program(connection));
+                    }
+                }
+            );
+
+            consoleProgram.main.GetAwaiter().GetResult();
+            NetworkQuestion.stop();
+            
+            foreach (var program in activePrograms)
+            {
+                program.main.GetAwaiter().GetResult();
+            }
         }
 
         private Program(Question ui)
@@ -65,7 +89,7 @@ namespace Bussen
                 }
             }
 
-            Env.Exit(0);
+            //Env.Exit(0);
         }
 
         private string Status()

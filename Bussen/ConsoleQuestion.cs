@@ -1,4 +1,6 @@
-﻿using ConsoleIF = System.Console;
+﻿using AsyncNullString = System.Threading.Tasks.Task<string?>;
+using AsyncTask = System.Threading.Tasks.Task;
+using ConsoleIF = System.Console;
 
 namespace Bussen
 {
@@ -19,10 +21,10 @@ namespace Bussen
             }
         }
 
-        protected override async System.Threading.Tasks.Task<string?> Ask(string question)
+        protected override async AsyncNullString Ask(string question)
         {
             Tell(question + " ", true, false);
-            return await System.Threading.Tasks.Task.Run(() => ConsoleIF.ReadLine());
+            return await AsyncTask.Run(() => ConsoleIF.ReadLine());
         }
     }
 }

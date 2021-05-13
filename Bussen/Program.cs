@@ -29,13 +29,12 @@
 
         private static void Main(string[] args)
         {
-            (new Program()).main.GetAwaiter().GetResult();
+            (new Program(Question.Console())).main.GetAwaiter().GetResult();
         }
 
-        private Program()
+        private Program(Question ui)
         {
-            ui = Question.Console();
-            //ui = Question.Window();
+            this.ui = ui;
             main = MainLoop();
         }
 
